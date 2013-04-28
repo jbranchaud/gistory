@@ -54,5 +54,68 @@ def find_common_parent(merge_commit):
 
     return parentA
 
+def find_nearest_common_parent(merge_commit):
+    """
+    find_nearest_common_parent
+    
+    given a merge commit object, this function will grab its parents and
+    invoke the find_all_parents with those two parents as the arguments. The
+    list of commit objects returned by the find_all_parents function will
+    need to be searched through to identify the commit object with the most
+    recent commit date. That commit object is then returned.
+    """
+    # if the given commit object is not a merge, return None
+    if len(merge_commit.parents) < 2:
+        return None
+
+    # call the find_all_parents function on the parents
+    parents = find_all_parents(merge_commit.parents[0], merge_commit.parents[1])
+
+    # if there are no resulting parents, then return None
+    if not parents:
+        return None
+
+    # get the commit with the most recent commit date
+    return max([(commit.committed_date,commit) for commit in parents])[1]
+
+def find_all_parents(c1,c2):
+    """
+    find_all_parents
+
+    given two commit objects, this function will start traversing through
+    their parent chain until a common parent is found. If a merge commit is
+    encountered, then this function is recursively called on each pairing of
+    the merge's parents with the other commit.
+    """
+    # an empty list to put come parent commits in
+    commits = []
+
+    # once we have encountered the same parent, we can exit the while loop
+    while c1 != c2:
+        # if c1 is a merge
+        if len(c1.parents) == 2:
+            # a merge has been reached, so break the problem into two
+            # subproblems with the find_all_parents of c2 with each of the
+            # parents of the c1 merge commit.
+            commits.extend(find_all_parents(c1.parents[0],c2))
+            commits.extend(find_all_parents(c2.parents[1],c2))
+            return commits
+        elif len(c2.parents) == 2:
+            # a merge has been reachced, so break the problem into two
+            # subproblems with the find_all_parents of c1 with each of the
+            # parents of the c2 merge commit.
+            commits.extend(find_all_parents(c1,c2.parents[0]))
+            commits.extend(find_all_parents(c1,c2.parents[1]))
+            return commits
+        else:
+            # find the more recent commit and advance it to its parent
+            if c1.committed_date > c2.committed_date:
+                c1 = c1.parents[0]
+            else:
+                c2 = c2.parents[0]
+
+    # a common parent has been reached, wrap in a list and return
+    return [c1]
+
 if __name__ == "__main__":
     main(sys.argv[1:])
