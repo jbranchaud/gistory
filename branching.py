@@ -117,5 +117,23 @@ def find_all_parents(c1,c2):
     # a common parent has been reached, wrap in a list and return
     return [c1]
 
+"""
+TODO: add a function that is given a git.Repo object and will go through all
+the commits in the repository to make sure that it is a reasonably valid
+repository. This involves some of the following things:
+- the committed date of a commit object should always be greater than the
+  committed date of that commit object's parent. Make sure this is valid
+  assumption even in the case of things like rebasing.
+- no commit can ever have more than 2 parents
+- there should only be one commit with no parents which is the root commit.
+  This may not, however, be true for some repositories where two different
+  commit histories get merged. Check this assumption.
+- others?
+This is necessary because it is possible to manual construct portions of a
+git repository as well as amend/modify its history in unpredictable way. We
+need to make sure the repositories that we are dealing with are predictable.
+If they are predictable, then we will consider them to be reasonably valid.
+"""
+
 if __name__ == "__main__":
     main(sys.argv[1:])
