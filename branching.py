@@ -98,7 +98,7 @@ def find_all_parents(c1,c2):
             # subproblems with the find_all_parents of c2 with each of the
             # parents of the c1 merge commit.
             commits.extend(find_all_parents(c1.parents[0],c2))
-            commits.extend(find_all_parents(c2.parents[1],c2))
+            commits.extend(find_all_parents(c1.parents[1],c2))
             return commits
         elif len(c2.parents) == 2:
             # a merge has been reachced, so break the problem into two
@@ -115,7 +115,47 @@ def find_all_parents(c1,c2):
                 c2 = c2.parents[0]
 
     # a common parent has been reached, wrap in a list and return
+    print('Candidate Parent: ' + c1.hexsha)
     return [c1]
+
+def commit_dominance_exists(c1,c2):
+    """
+    given two commits, c1 that is a merge (has two parents) and c2 that is
+    a branching point (has at least 2 children), this function will
+    determine if all possible paths from c1 lead back to c2. If that is the
+    case, then c1 is dominated by c2 and True is returned. Otherwise False
+    is returned.
+    """
+    print('TODO')
+
+def find_path_between_commits(c1,c2):
+    """
+    find_path_between_commits
+
+    given two commit objects, this function will perform an exhaustive depth
+    first traversal to build up a list of all paths between c1 and c2. It is
+    assumed that c1 is a more recent commit than c2. There may be paths that
+    will never lead from c1 to c2, these should be temporally identified and
+    discarded. The resulting list of commit paths (lists of commits) will be
+    returned.
+    """
+    # check that the commit objects were given in the correct order
+    if c1.committed_date < c2.committed_date:
+        print(c1.hexsha + ' is not an ancestor of ' + c2.hexsha + '.')
+        return []
+
+    print('TODO')
+
+    #while c1 != c2:
+        # there is a list of lists called paths
+        # for each of the commit's parents
+
+"""
+TODO: add a function that lists the unique authors along a given sequence of
+commits and do the same for committers.
+TODO: add a function that lists the unique authors for paths between two
+commits in a repository history and do the same for committers.
+"""
 
 """
 TODO: add a function that is given a git.Repo object and will go through all
