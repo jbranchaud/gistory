@@ -14,6 +14,13 @@ def main(args):
         sys.exit(1)
     print(args[0])
 
+"""
+FIXME: this works for a lot of mild cases, however for super complex, large
+commit histories, this can fail hard (in the sense that it runs too long,
+possibly in a loop). For instance, with voldemort/voldemort, if I pass in
+the commit at 39898c14da6b6f6385849800c7c5df09855036d8, it runs for minutes
+with no sign of termination.
+"""
 def find_common_parent(merge_commit):
     """
     find_common_parent
