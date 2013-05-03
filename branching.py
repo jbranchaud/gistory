@@ -15,12 +15,12 @@ def main(args):
     print(args[0])
 
 """
-FIXME: this works for a lot of mild cases, however for super complex, large
-commit histories, this can fail hard (in the sense that it runs too long,
-possibly in a loop). For instance, with voldemort/voldemort, if I pass in
-the commit at 39898c14da6b6f6385849800c7c5df09855036d8, it runs for minutes
-with no sign of termination.
+Note: the date based approach to traversing branches used in many of these
+functions will face issues with heavily rebased repositories. We still need
+to think of a clever way to deal with situations that involve rebased
+commits.
 """
+
 def find_common_parent(merge_commit):
     """
     find_common_parent
@@ -61,6 +61,13 @@ def find_common_parent(merge_commit):
 
     return parentA
 
+"""
+FIXME: this works for a lot of mild cases, however for super complex, large
+commit histories, this can fail hard (in the sense that it runs too long,
+possibly in a loop). For instance, with voldemort/voldemort, if I pass in
+the commit at 39898c14da6b6f6385849800c7c5df09855036d8, it runs for minutes
+with no sign of termination.
+"""
 def find_nearest_common_parent(merge_commit):
     """
     find_nearest_common_parent
