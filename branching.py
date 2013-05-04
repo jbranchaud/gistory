@@ -129,7 +129,6 @@ def find_all_parents(c1,c2):
                 c2 = c2.parents[0]
 
     # a common parent has been reached, wrap in a list and return
-    print('Candidate Parent: ' + c1.hexsha)
     return [c1]
 
 def commit_dominance_exists(c1,c2):
