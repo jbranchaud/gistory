@@ -32,7 +32,7 @@ def main():
 
     # go through the commits and print out the markdown links for each
     for commit in commits:
-        print('[%s](%s%s)' % (commit.hexsha,repo_url,commit.hexsha))
+        print('[%s](%s%s)\n' % (commit.hexsha,repo_url,commit.hexsha))
 
 if __name__ == '__main__':
     main()
