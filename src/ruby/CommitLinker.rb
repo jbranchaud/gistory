@@ -73,9 +73,9 @@ def link_commits(repo_path, username, repo_name)
   #  puts "[#{commit.sha}](#{partial_URL + commit.sha})\n\n"
   #}
 
-  return all_commits.map{ |commit|
+  return all_commits.map do |commit|
     "[#{commit.sha}](#{partial_URL + commit.sha})\n\n"
-  }
+  end
 end
 
 # if this is being invoked as a script, invoke the main method
