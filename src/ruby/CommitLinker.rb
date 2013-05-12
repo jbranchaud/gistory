@@ -9,12 +9,14 @@ require 'grit'
 # main
 #
 # this function is only invoked if this script is being invoked directly.
-# It is given the command-line arguments which should be made up of 3
+# It grabs the command-line arguments which should be made up of 3
 # things:
 # - local repository path
 # - GitHub username for repository owner
 # - GitHub repository name
-def main(args)
+# It then invokes link_commits to get a list of commit markdown links and
+# prints those all out to STDOUT.
+def main()
 
   # check that 3 arguments have been given, otherwise exit
   if ARGV.length < 3
@@ -80,5 +82,5 @@ end
 
 # if this is being invoked as a script, invoke the main method
 if __FILE__==$0
-  main(ARGV)
+  main()
 end
