@@ -100,6 +100,18 @@ module DiffUtil
     return repo.diff(commit1,commit2)
   end
 
+  # DiffUtil.get_diffs
+  #
+  # given a repo, two SHAs, and a string (containing any combination of
+  # A,D,R,M), this function will get the files that are
+  # added/deleted/renamed/modified based on what's specified and then return
+  # that Array.
+  def DiffUtil.get_diffs(repo,commit1,commit2,types)
+    diffs = repo.diff(commit1,commit2)
+
+    return diffs.map { |diff| types.include?('A') && diff.new_file ? diff : types.include?('D') && diff.deleted_file ? diff : types.include?('R') && diff.renamed_file ? diff : types.include?('M') && !diff.new_file && !diff.deleted_file && !diff.renamed_file ? diff : nil }.compact
+  end
+
 end
 
 if __FILE__==$0
