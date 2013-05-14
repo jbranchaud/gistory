@@ -93,6 +93,13 @@ module DiffUtil
     return diffs.map { |diff| diff.renamed_file ? nil : diff.deleted_file ? nil : diff.new_file ? nil : diff }.compact
   end
 
+  # DiffUtil.get_all_diffs
+  #
+  # given a repo and two SHAs, return an Array of the diff objects
+  def DiffUtil.get_all_diffs(repo,commit1,commit2)
+    return repo.diff(commit1,commit2)
+  end
+
 end
 
 if __FILE__==$0
