@@ -90,7 +90,10 @@ module DiffUtil
   def DiffUtil.get_modified_diffs(repo,commit1,commit2)
     diffs = repo.diff(commit1,commit2)
 
-    return diffs.map { |diff| diff.renamed_file ? nil : diff.deleted_file ? nil : diff.new_file ? nil : diff }.compact
+    return diffs.map { |diff| diff.renamed_file ? nil :
+      diff.deleted_file ? nil :
+      diff.new_file ? nil :
+      diff }.compact
   end
 
   # DiffUtil.get_all_diffs
@@ -109,7 +112,11 @@ module DiffUtil
   def DiffUtil.get_diffs(repo,commit1,commit2,types)
     diffs = repo.diff(commit1,commit2)
 
-    return diffs.map { |diff| types.include?('A') && diff.new_file ? diff : types.include?('D') && diff.deleted_file ? diff : types.include?('R') && diff.renamed_file ? diff : types.include?('M') && !diff.new_file && !diff.deleted_file && !diff.renamed_file ? diff : nil }.compact
+    return diffs.map { |diff| types.include?('A') && diff.new_file ? diff :
+      types.include?('D') && diff.deleted_file ? diff :
+      types.include?('R') && diff.renamed_file ? diff :
+      types.include?('M') && !diff.new_file && !diff.deleted_file && !diff.renamed_file ? diff :
+      nil }.compact
   end
 
 end
