@@ -53,6 +53,46 @@ module DiffUtil
     end
   end
 
+  # DiffUtil.get_added_diffs
+  #
+  # given a repo and two SHAs, return an Array of the diff objects that are
+  # associated with added files.
+  def DiffUtil.get_added_diffs(repo,commit1,commit2)
+    diffs = repo.diff(commit1,commit2)
+
+    return diffs.map { |diff| diff.new_file ? diff : nil }.compact
+  end
+
+  # DiffUtil.get_deleted_diffs
+  #
+  # given a repo and two SHAs, return an Array of the diff objects that are
+  # associated with deleted files.
+  def DiffUtil.get_deleted_diffs(repo,commit1,commit2)
+    diffs = repo.diff(commit1,commit2)
+
+    return diffs.map { |diff| diff.deleted_file ? diff : nil }.compact
+  end
+
+  # DiffUtil.get_renamed_diffs
+  #
+  # given a repo and two SHAs, return an Array of the diff objects that are
+  # associated with renamed files.
+  def DiffUtil.get_renamed_diffs(repo,commit1,commit2)
+    diffs = repo.diff(commit1,commit2)
+
+    return diffs.map { |diff| diff.renamed_file ? diff : nil }.compact
+  end
+
+  # DiffUtil.get_modified_diffs
+  #
+  # given a repo and two SHAs, return an Array of the diff objects that are
+  # associated with modified files.
+  def DiffUtil.get_modified_diffs(repo,commit1,commit2)
+    diffs = repo.diff(commit1,commit2)
+
+    return diffs.map { |diff| diff.renamed_file ? nil : diff.deleted_file ? nil : diff.new_file ? nil : diff }.compact
+  end
+
 end
 
 if __FILE__==$0
