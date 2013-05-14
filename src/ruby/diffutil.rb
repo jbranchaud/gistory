@@ -119,6 +119,38 @@ module DiffUtil
       nil }.compact
   end
 
+  # DiffUtil.get_added_paths
+  #
+  # given a repo and two SHAs, this function will return a list of the path
+  # names for the added files.
+  def DiffUtil.get_added_paths(repo,commit1,commit2)
+    return DiffUtil.get_added_diffs(repo,commit1,commit2).map { |diff| diff.b_path }
+  end
+
+  # DiffUtil.get_deleted_paths
+  #
+  # given a repo and two SHAs, this function will return a list of the path
+  # names for the deleted files.
+  def DiffUtil.get_deleted_paths(repo,commit1,commit2)
+    return DiffUtil.get_deleted_diffs(repo,commit1,commit2).map { |diff| diff.a_path }
+  end
+
+  # DiffUtil.get_renamed_paths
+  #
+  # given a repo and two SHAs, this function will return a list of the new
+  # paths names for the renamed files.
+  def DiffUtil.get_renamed_paths(repo,commit1,commit2)
+    return DiffUtil.get_renamed_diffs(repo,commit1,commit2).map { |diff| diff.b_path }
+  end
+
+  # DiffUtil.get_modified_paths
+  #
+  # given a repo and two SHAs, this function will return a list of the path
+  # names for the modified files.
+  def DiffUtil.get_modified_paths(repo,commit1,commit2)
+    return DiffUtil.get_modified_diffs(repo,commit1,commit2).map { |diff| diff.b_path }
+  end
+
 end
 
 if __FILE__==$0
