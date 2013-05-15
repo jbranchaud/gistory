@@ -151,6 +151,31 @@ module DiffUtil
     return DiffUtil.get_modified_diffs(repo,commit1,commit2).map { |diff| diff.b_path }
   end
 
+  # DiffUtil.get_all_paths
+  #
+  # given a repo and two SHAs, this function will return a list of the path
+  # names for all files in the diff.
+  def DiffUtil.get_all_paths(repo,commit1,commit2)
+    return DiffUtil.get_all_diffs(repo,commit1,commit2).map { |diff| DiffUtil.get_diff_path(diff) }
+  end
+
+  # DiffUtil.get_diff_path
+  #
+  # given a diff object, this function will determine what kind of change
+  # the diff is, extract the appropriate dw name for that diff, and then return
+  # that path.
+  def DiffUtil.get_diff_path(diff)
+    if diff.new_file
+      return diff.b_path
+    elsif diff.deleted_file
+      return diff.a_path
+    elsif diff.renamed_file
+      return diff.b_path
+    else
+      return diff.a_path
+    end
+  end
+
 end
 
 if __FILE__==$0
