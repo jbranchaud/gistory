@@ -176,6 +176,31 @@ module DiffUtil
     end
   end
 
+  # DiffUtil.get_status_added
+  #
+  # given a repo object, this function will get all the status objects that
+  # have been added to the working copy (index) and return them as an Array.
+  def DiffUtil.get_status_added(repo)
+    return repo.status.added.map { |name,status| status }
+  end
+
+  # DiffUtil.get_status_deleted
+  #
+  # given a repo object, this function will get all the status objects that
+  # have been deleted from the working copy (index) and return them as an
+  # Array.
+  def DiffUtil.get_status_deleted(repo)
+    return repo.status.deleted.map { |name,status| status }
+  end
+
+  # DiffUtil.get_status_changed
+  #
+  # given a repo object, this function will get all the status objects that
+  # have been modified in the working copy and return them as an Array.
+  def DiffUtil.get_status_changed(repo)
+    return repo.status.changed.map { |name,status| status }
+  end
+
 end
 
 if __FILE__==$0
