@@ -210,6 +210,42 @@ module DiffUtil
     return DiffUtil.get_status_added(repo) + DiffUtil.get_status_deleted(repo) + DiffUtil.get_status_changed(repo)
   end
 
+  # DiffUtil.get_status_added_paths
+  #
+  # given a repo object, this function will get all the status item paths for
+  # files that have been added to the working copy and return them as an
+  # Array.
+  def DiffUtil.get_status_added_paths(repo)
+    return repo.status.added.map { |name, status| name }
+  end
+
+  # DiffUtil.get_status_deleted_paths
+  #
+  # given a repo object, this function will get all the status item paths
+  # for the files that have been deleted from the working copy and return
+  # them as an Array.
+  def DiffUtil.get_status_deleted_paths(repo)
+    return repo.status.deleted.map { |name, status| name }
+  end
+
+  # DiffUtil.get_status_changed_paths
+  #
+  # given a repo object, this function will get all the status item paths
+  # for the files that have been changed in the working copy and return them
+  # as an Array.
+  def DiffUtil.get_status_changed_paths(repo)
+    return repo.status.changed.map { |name,status| name }
+  end
+
+  # DiffUtil.get_status_all_paths
+  #
+  # given a repo object, this function will get all the status item paths
+  # for all the files that have been either added, deleted, or changed in
+  # the working copy and return them as an Array.
+  def DiffUtil.get_status_all_paths(repo)
+    return DiffUtil.get_status_added_paths(repo) + DiffUtil.get_status_deleted_paths(repo) + DiffUtil.get_status_changed_paths(repo)
+  end
+
 end
 
 if __FILE__==$0
