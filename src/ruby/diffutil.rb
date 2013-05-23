@@ -32,6 +32,17 @@ end
 
 module DiffUtil
 
+  # DiffUtil.confirm_common_origin
+  #
+  # given two commit objects, this function will confirm if they are
+  # commits of the same repository, otherwise a runtime exception will be
+  # raised.
+  def DiffUtil.confirm_common_origin(commit1,commit2)
+    if commit1.repo != commit2.repo
+      raise "The given commits are not from the same repository."
+    end
+  end
+
   # DiffUtil.summarize_diff
   #
   # given two SHAs, output a summary of the files in the diff by
@@ -55,9 +66,11 @@ module DiffUtil
 
   # DiffUtil.get_added_diffs
   #
-  # given a repo and two SHAs, return an Array of the diff objects that are
-  # associated with added files.
-  def DiffUtil.get_added_diffs(repo,commit1,commit2)
+  # given two commit objects, this function returns an Array of the diff
+  # objects that are associated with added files.
+  def DiffUtil.get_added_diffs(commit1,commit2)
+    DiffUtil.confirm_common_origin(commit1,commit2)
+    repo = commit1.repo
     diffs = repo.diff(commit1,commit2)
 
     return diffs.map { |diff| diff.new_file ? diff : nil }.compact
@@ -65,9 +78,11 @@ module DiffUtil
 
   # DiffUtil.get_deleted_diffs
   #
-  # given a repo and two SHAs, return an Array of the diff objects that are
-  # associated with deleted files.
-  def DiffUtil.get_deleted_diffs(repo,commit1,commit2)
+  # given two commit objects, this function returns an Array of the diff
+  # objects that are associated with deleted files.
+  def DiffUtil.get_deleted_diffs(commit1,commit2)
+    DiffUtil.confirm_common_origin(commit1,commit2)
+    repo = commit1.repo
     diffs = repo.diff(commit1,commit2)
 
     return diffs.map { |diff| diff.deleted_file ? diff : nil }.compact
@@ -75,9 +90,11 @@ module DiffUtil
 
   # DiffUtil.get_renamed_diffs
   #
-  # given a repo and two SHAs, return an Array of the diff objects that are
-  # associated with renamed files.
-  def DiffUtil.get_renamed_diffs(repo,commit1,commit2)
+  # given two commit objects, this function returns an Array of the diff
+  # objects that are associated with renamed files.
+  def DiffUtil.get_renamed_diffs(commit1,commit2)
+    DiffUtil.confirm_common_origin(commit1,commit2)
+    repo = commit1.repo
     diffs = repo.diff(commit1,commit2)
 
     return diffs.map { |diff| diff.renamed_file ? diff : nil }.compact
@@ -85,9 +102,11 @@ module DiffUtil
 
   # DiffUtil.get_modified_diffs
   #
-  # given a repo and two SHAs, return an Array of the diff objects that are
-  # associated with modified files.
-  def DiffUtil.get_modified_diffs(repo,commit1,commit2)
+  # given two commit objects, this function returns an Array of the diff
+  # objects that are associated with renamed files.
+  def DiffUtil.get_modified_diffs(commit1,commit2)
+    DiffUtil.confirm_common_origin(commit1,commit2)
+    repo = commit1.repo
     diffs = repo.diff(commit1,commit2)
 
     return diffs.map { |diff| diff.renamed_file ? nil :
@@ -98,18 +117,21 @@ module DiffUtil
 
   # DiffUtil.get_all_diffs
   #
-  # given a repo and two SHAs, return an Array of the diff objects
-  def DiffUtil.get_all_diffs(repo,commit1,commit2)
+  # given two commit objects, this function returns an Array of all the diff
+  # objects between the two commits.
+  def DiffUtil.get_all_diffs(commit1,commit2)
+    DiffUtil.confirm_common_origin(commit1,commit2)
+    repo = commit1.repo
     return repo.diff(commit1,commit2)
   end
 
   # DiffUtil.get_diffs
   #
-  # given a repo, two SHAs, and a string (containing any combination of
+  # given two commit objects and a string (containing any combination of
   # A,D,R,M), this function will get the files that are
   # added/deleted/renamed/modified based on what's specified and then return
   # that Array.
-  def DiffUtil.get_diffs(repo,commit1,commit2,types)
+  def DiffUtil.get_diffs(commit1,commit2,types)
     diffs = repo.diff(commit1,commit2)
 
     return diffs.map { |diff| types.include?('A') && diff.new_file ? diff :
@@ -121,42 +143,42 @@ module DiffUtil
 
   # DiffUtil.get_added_paths
   #
-  # given a repo and two SHAs, this function will return a list of the path
+  # given two commit objects, this function will return a list of the path
   # names for the added files.
-  def DiffUtil.get_added_paths(repo,commit1,commit2)
-    return DiffUtil.get_added_diffs(repo,commit1,commit2).map { |diff| diff.b_path }
+  def DiffUtil.get_added_paths(commit1,commit2)
+    return DiffUtil.get_added_diffs(commit1,commit2).map { |diff| diff.b_path }
   end
 
   # DiffUtil.get_deleted_paths
   #
-  # given a repo and two SHAs, this function will return a list of the path
+  # given two commit objects, this function will return a list of the path
   # names for the deleted files.
-  def DiffUtil.get_deleted_paths(repo,commit1,commit2)
-    return DiffUtil.get_deleted_diffs(repo,commit1,commit2).map { |diff| diff.a_path }
+  def DiffUtil.get_deleted_paths(commit1,commit2)
+    return DiffUtil.get_deleted_diffs(commit1,commit2).map { |diff| diff.a_path }
   end
 
   # DiffUtil.get_renamed_paths
   #
-  # given a repo and two SHAs, this function will return a list of the new
+  # given two commit objects, this function will return a list of the new
   # paths names for the renamed files.
-  def DiffUtil.get_renamed_paths(repo,commit1,commit2)
-    return DiffUtil.get_renamed_diffs(repo,commit1,commit2).map { |diff| diff.b_path }
+  def DiffUtil.get_renamed_paths(commit1,commit2)
+    return DiffUtil.get_renamed_diffs(commit1,commit2).map { |diff| diff.b_path }
   end
 
   # DiffUtil.get_modified_paths
   #
-  # given a repo and two SHAs, this function will return a list of the path
+  # given two commit objects, this function will return a list of the path
   # names for the modified files.
-  def DiffUtil.get_modified_paths(repo,commit1,commit2)
-    return DiffUtil.get_modified_diffs(repo,commit1,commit2).map { |diff| diff.b_path }
+  def DiffUtil.get_modified_paths(commit1,commit2)
+    return DiffUtil.get_modified_diffs(commit1,commit2).map { |diff| diff.b_path }
   end
 
   # DiffUtil.get_all_paths
   #
-  # given a repo and two SHAs, this function will return a list of the path
+  # given two commit objects, this function will return a list of the path
   # names for all files in the diff.
-  def DiffUtil.get_all_paths(repo,commit1,commit2)
-    return DiffUtil.get_all_diffs(repo,commit1,commit2).map { |diff| DiffUtil.get_diff_path(diff) }
+  def DiffUtil.get_all_paths(commit1,commit2)
+    return DiffUtil.get_all_diffs(commit1,commit2).map { |diff| DiffUtil.get_diff_path(diff) }
   end
 
   # DiffUtil.get_diff_path
