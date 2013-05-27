@@ -5,7 +5,7 @@
 require File.dirname(__FILE__) + '/diffutil'
 require 'grit'
 
-TEST_REPO_PATH = '/Users/jbranchaud/Documents/git/dragonballer'
+TEST_REPO_PATH = '/Users/jbranchaud/Documents/research/eval-subjects/voldemort-farm/voldemort0'
 TEST_REPO = Grit::Repo.new(TEST_REPO_PATH)
 
 repo = TEST_REPO
@@ -26,10 +26,6 @@ all_commits.each do |commit|
   puts "    #{commit.author}"
 end
 
-merge1 = repo.commit('1f701d419d949b6d55749962207404745a30763e')
-parent1 = merge1.parents[0]
-parent2 = merge1.parents[1]
-
 # go through the commits, if it has 1 parent, do a diff.
 # if there are 2 parents, then skip it
 # if there are 0 parents, then stop
@@ -48,3 +44,7 @@ all_commits.each do |commit|
 end
 
 puts ownership_map
+
+ownership_map.each do |key,count|
+  puts "#{count} : #{key}" if count > 50
+end
